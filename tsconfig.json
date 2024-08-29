@@ -35,7 +35,8 @@
     "next-env.d.ts",
     "build/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "app/(public)/layout.jsx"
   ],
   "exclude": [
     "node_modules"

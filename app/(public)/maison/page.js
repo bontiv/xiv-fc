@@ -1,5 +1,5 @@
 import Image from "next/image"
-import LightBox from "../components/lightbox"
+import LightBox from "@/app/components/lightbox"
 
 export const metadata = {
     title: 'Le domaine - CL Alpha FFXIV',

@@ -16,7 +16,7 @@ a:hover {
 }
 
 .header-top {
-  @apply h-72 bg-[url('/preludeinviolet.webp')] bg-top bg-cover px-4
+  @apply h-72 bg-[url('/preludeinviolet.webp')] bg-top bg-cover
 }
 
 .menu-container {
@@ -75,6 +75,7 @@ h3 {
 .csection.reverse div:first-child {
   @apply md:order-last
 }
+
 .csection img {
   @apply rounded drop-shadow-lg
 }
