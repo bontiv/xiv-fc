@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://www.cl-alpha-ffxiv.fr/sitemap.xml

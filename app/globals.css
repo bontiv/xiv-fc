@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+b {
+  @apply text-cyan-900
+}
+
+a {
+  @apply text-cyan-700
+}
+
+a:hover {
+  @apply underline
+}
+
+.header-top {
+  @apply h-72 bg-[url('/preludeinviolet.webp')] bg-top bg-cover px-4
+}
+
+.menu-container {
+  @apply bg-gradient-to-r from-gray-500/[0.6] to-slate-500/[0.6] w-full text-white absolute top-0 px-4
+}
+
+.menu-content {
+  @apply container mx-auto h-full flex flex-row-reverse hidden sm:block
+}
+
+
+.menu-content * {
+  @apply h-16 text-center align-middle inline-block pt-4 text-inherit px-4
+}
+
+.menu-content.collapse-open {
+  @apply container mx-auto h-full flex-row-reverse block bg-white text-black
+}
+
+.menu-content.collapse-open * {
+  @apply w-full text-center align-middle inline-block pt-4 text-inherit px-4
+}
+
+.menu-content.collapse-open *:hover {
+  @apply bg-inherit
+}
+
+.menu-content.collapse-open .active, .menu-content.collapse-open .active:hover {
+  @apply underline font-bold text-indigo-600 bg-inherit
+}
+
+.menu-content .active, .menu-content .active:hover {
+  @apply bg-black underline font-bold text-indigo-50
+}
+
+.menu-content *:hover {
+  @apply bg-slate-600
+}
+
+p {
+  @apply py-2
+}
+
+h3 {
+  @apply text-3xl pt-10 pb-4 px-4 font-bold
+}
+
+.button {
+  @apply bg-blue-600 rounded-full px-4 py-2 text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-blue-800 hover:no-underline font-normal
+}
+
+.csection {
+  @apply grid grid-cols-3 md:gap-20 items-center py-16 md:py-20 py-4 px-10 mt-4 border-slate-300
+}
+
+.csection.reverse div:first-child {
+  @apply md:order-last
+}
+.csection img {
+  @apply rounded drop-shadow-lg
+}
+
+.csection div {
+  @apply col-span-3 md:col-span-2
+}
+
+.csection div:first-child {
+  @apply col-span-3 md:col-span-1
+}
+
+.main-content {
+  @apply container mx-auto py-8 text-xl
+}
