@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import useSWR from 'swr/immutable'
 
-export default async function About() {
+export default function About() {
     const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_URL}/api/freecompany/9231253336202720275/members.json`)
     return <>
         <h3 id="about">A propos de nous</h3>

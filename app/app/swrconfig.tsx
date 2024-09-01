@@ -1,9 +1,10 @@
 'use client'
 import { SWRConfiguration, SWRConfig as config } from "swr";
+import { Fetcher } from '@lib/data/api-fetcher';
 
 export const SWRConfig = ({ ...props }) => config({
     value: {
-        fetcher: (url, init) => fetch(process.env.NEXT_PUBLIC_API + url, init).then(r => r.json())
+        fetcher: (url, init) => Fetcher().get(url, { ...init }).then(r => r.data)
     },
     ...props
 })

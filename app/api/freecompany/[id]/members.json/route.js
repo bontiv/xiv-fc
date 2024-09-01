@@ -1,4 +1,4 @@
-import { GetCompanyMembers } from "@/lib/parser"
+import { GetCompanyMembers } from "@lib/parser"
 
 export const dynamic = 'force-static'
 export const revalidate = 86400

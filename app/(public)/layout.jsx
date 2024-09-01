@@ -1,8 +1,6 @@
-'use server'
-
 import { FreeCompany, FCMembers } from "@xivapi/nodestone";
-import { GetCompanyMembers } from '@/lib/parser';
-import CustomSWRConfig from '@/lib/SWRConfig';
+import { GetCompanyMembers } from '@lib/parser';
+import CustomSWRConfig from '@lib/SWRConfig';
 
 export default async function PublicLayout({ children }) {
     const fc = new FreeCompany()

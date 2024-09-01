@@ -7,7 +7,7 @@ export const metadata = {
   description: 'La compagnie libre francophone et fun sur le serveur Phoenix de Final Fantasy XIV.',
 }
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className="main-content">
       <div className="flex gap-20  items-center md:py-12">

@@ -14,6 +14,7 @@ export default function AuthProvider({ provider }: { provider: string }) {
     if (!isLoading && data.jwt) {
         localStorage.setItem('jwt', data.jwt)
         localStorage.setItem('user', JSON.stringify(data.user))
+        if (access_token != null) localStorage.setItem('discordToken', access_token)
         navigate.push('/app/')
     }
 
