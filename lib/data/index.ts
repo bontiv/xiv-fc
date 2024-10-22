@@ -1,5 +1,6 @@
 import { useMemo } from "react"
 import useSWR from "swr"
+import { Fetcher } from "./api-fetcher"
 
 export type QueryParams = {
     fields?: string[],
@@ -33,6 +34,12 @@ function recurseObjEncode(obj: object, path: string | null = null): KeyValue[] {
     return returnData
 }
 
+function useForcedApiSWR(url: string | null) {
+    return useSWR(url, {
+        fetcher: (url: string, init: any) => Fetcher().get(url, { ...init }).then(r => r.data)
+    });
+}
+
 export function useDataApiMany(collection: string | null | false, query: QueryParams | undefined = undefined) {
     const url = useMemo<string | null>(
         () => {
@@ -45,5 +52,20 @@ export function useDataApiMany(collection: string | null | false, query: QueryPa
         },
         [collection, query]
     )
-    return useSWR(url);
+    return useForcedApiSWR(url);
+}
+
+export function useDataOne(collection: string | null | false, id: number, query: QueryParams | undefined = undefined) {
+    const url = useMemo<string | null>(
+        () => {
+            if (collection == null || collection == false) {
+                return null;
+            }
+            return `/api/${collection}/${id}` + (query !== undefined ? '?' + recurseObjEncode(query)
+                .map(opt => `${opt.key}=${encodeURIComponent(opt.value)}`)
+                .join('&') : '')
+        },
+        [collection, id, query]
+    )
+    return useForcedApiSWR(url);
 }
