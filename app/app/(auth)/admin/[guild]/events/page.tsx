@@ -1,3 +1,4 @@
+import { getGuildList } from "@src/lib/data";
 import { EventTable } from "./table";
 import React from "react";
 
@@ -12,7 +13,8 @@ export default function AdmGuildEventPage({ params }: { params: Promise<{ guild:
 }
 
 export async function generateStaticParams() {
-
+    const guilds = await getGuildList()
+    return guilds.map((x: any) => ({ guild: String(x.id) }))
     return [
         { guild: '2' },
         { guild: '3' },

@@ -205,3 +205,9 @@ export function useAccessRights(): AccessRights | undefined {
     const { data: role } = useForcedApiSWR(me == undefined ? null : `/api/users-permissions/roles/${me.role.id}`)
     return new AccessRights(role?.role)
 }
+
+export function getGuildList() {
+    return fetch(process.env.NEXT_PUBLIC_API + '/api/discord-servers?fields[0]=id', {
+        headers: { 'Content-Type': 'application/json' },
+    }).then(x => x.json()).then(x => x.data)
+}

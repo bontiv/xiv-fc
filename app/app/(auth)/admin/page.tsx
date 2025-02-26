@@ -21,7 +21,7 @@ export default function AdmGuildPage() {
             borderRadius: token.borderRadiusLG,
         }}>
             <List dataSource={guilds?.data} rowKey={'id'} renderItem={(item: any) => <List.Item actions={[<a key='edit' onClick={() => navigate.push(`/app/admin/${item.id}/events/`)}>Consulter</a>]}>
-                <List.Item.Meta title={item.attributes.name} />
+                <List.Item.Meta title={item.name} />
             </List.Item>} />
         </Content>
 

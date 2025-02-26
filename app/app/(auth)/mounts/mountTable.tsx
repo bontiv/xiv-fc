@@ -16,16 +16,16 @@ export const MountTable: React.FC<{ competitors: any }> = ({ competitors }) => {
         key: `player`,
         title: 'Joueur',
         fixed: 'left',
-        dataIndex: ['attributes', 'Name'],
+        dataIndex: ['Name'],
         render: (name, record) => <Space>
-            <Avatar src={record.attributes.Avatar} />{name.split(' ')[0]}
+            <Avatar src={record.Avatar} />{name.split(' ')[0]}
         </Space>
     }]
 
     if (mountCategories != undefined) {
         for (const mountCategory of mountCategories.data) {
             const mounts: TableProps['columns'] = []
-            for (const mount of mountCategory.attributes.mounts.data) {
+            for (const mount of mountCategory.mounts) {
                 mounts.push(
                     {
                         key: `mount-${mount.id}`,
@@ -48,7 +48,7 @@ export const MountTable: React.FC<{ competitors: any }> = ({ competitors }) => {
             const mountsNeeded = mounts.filter(c => !c.hidden).length;
             columns.push({
                 key: `mountCategory-${mountCategory.id}`,
-                title: `${mountCategory.attributes.Name} (${mountsNeeded})`,
+                title: `${mountCategory.Name} (${mountsNeeded})`,
                 hidden: mountsNeeded == 0,
                 children: mounts
             })

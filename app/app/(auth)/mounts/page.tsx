@@ -30,7 +30,7 @@ const AppMounts: React.FC = () => {
         }
     })
 
-    const options = dataSearch == undefined ? [] : dataSearch.data.map((char: any) => ({ label: char.attributes.Name, value: char.id.toString() }))
+    const options = dataSearch == undefined ? [] : dataSearch.data.map((char: any) => ({ label: char.Name, value: char.id.toString() }))
 
     const onSelect = (data: string) => {
         console.log('onSelect', data);
