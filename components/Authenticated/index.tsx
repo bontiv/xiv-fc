@@ -22,7 +22,7 @@ export default function Authenticated({ children }: React.PropsWithChildren) {
             return
         }
         setAuthenticated(true)
-    }, [])
+    }, [navigate, isLoading, error])
 
     return <Suspense>{authenticated === undefined ? "Authentication requise..." : children}</Suspense>
 }

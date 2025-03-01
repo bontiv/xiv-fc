@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function AdmGuildEventPage({ params }: { params: Promise<{ guild: string }> }) {
     const { guild }: { guild: string } = React.use(params)
-    return <EventTable discord={guild} />
 
+    return <EventTable discord={guild} />
 }
 
 export async function generateStaticParams() {

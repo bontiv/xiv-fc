@@ -2,7 +2,7 @@
 
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { DataTable, useDatacontrol } from "@src/components/DataTable";
-import { Button, FloatButton, Popconfirm, Space, Tooltip } from "antd";
+import { Breadcrumb, Button, FloatButton, Popconfirm, Space, Tooltip } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
@@ -11,6 +11,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import type { EventType } from './edit';
 import { createEntry, deleteEntry, updateEntry } from "@src/lib/data";
+import { useRouter } from "next/navigation";
 
 const { useApp } = App;
 
@@ -23,8 +24,19 @@ export const EventTable: React.FC<{ discord: string }> = ({ discord }) => {
     const app = useApp()
     const [edit, setEdit] = useState<undefined | EventType | null>(undefined)
     const datatable = useDatacontrol()
+    const navigate = useRouter()
 
     return <>
+        <Breadcrumb
+            items={[
+                { title: 'Espace membre', href: '#', onClick: () => navigate.push('/app/') },
+                { title: 'Gestion Discord', href: '#', onClick: () => navigate.push('/app/admin/') },
+                { title: 'Événements' },
+            ]}
+            style={{
+                paddingBottom: '1em'
+            }}
+        />
         <DataTable
             dataControl={datatable}
             collection='events'
@@ -93,6 +105,7 @@ export const EventTable: React.FC<{ discord: string }> = ({ discord }) => {
         <EventDrawer
             edit={edit}
             onClose={() => setEdit(undefined)}
+            discord={discord}
             onFinish={async (values) => {
                 try {
                     if (edit === null) {
