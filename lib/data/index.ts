@@ -54,6 +54,8 @@ function recurseObjEncode(obj: object, path: string | null = null): KeyValue[] {
         const key = path == null ? keyPart : `${path}[${keyPart}]`
         if (typeof value === 'object') {
             returnData.push.apply(returnData, recurseObjEncode(value, key))
+        } else if (typeof value === 'undefined') {
+            // May skip undefined content
         } else if (typeof value === 'string') {
             returnData.push({ key, value })
         } else {
@@ -67,6 +69,11 @@ function useForcedApiSWR(url: string | null) {
     return useSWR(url, {
         fetcher: (url: string, init: any) => Fetcher().get(url, { ...init }).then(r => r.data)
     });
+}
+
+export function useApi(path: string | null) {
+
+    return useForcedApiSWR(path && '/api' + path)
 }
 
 export function useDataApiMany(collection: string | null | false, query: QueryParams | undefined = undefined) {
@@ -84,12 +91,12 @@ export function useDataApiMany(collection: string | null | false, query: QueryPa
     return useForcedApiSWR(url);
 }
 
-export function useMany(collection: string | null, query: QueryParams | undefined = undefined) {
+export function useMany(collection: string | null | undefined, query: QueryParams | undefined = undefined) {
     const url = `/api/${collection}` + (query !== undefined ? '?' + recurseObjEncode(query)
         .map(opt => `${opt.key}=${encodeURIComponent(opt.value)}`)
         .join('&') : '')
 
-    const api = useForcedApiSWR(url)
+    const api = useForcedApiSWR(collection ? url : null)
 
     if (!api.isLoading && !api.error && api.data != null) {
         if ('data' in api.data) {
@@ -138,7 +145,7 @@ export function useOne(collection: string, id: number | string | null | undefine
     const data = useForcedApiSWR(id == null || id == undefined ? null : url)
     if (!data.isLoading && !data.error && data.data != null) {
         if ('data' in data.data) {
-            return { ...data, data: { ...data.data.data.attributes, id: data.data.data.id } }
+            return { ...data, data: recurseObjFlat(data.data.data) }
         }
     }
     return data
@@ -204,10 +211,4 @@ export function useAccessRights(): AccessRights | undefined {
     const { data: me } = useForcedApiSWR('/api/users/me?populate=role')
     const { data: role } = useForcedApiSWR(me == undefined ? null : `/api/users-permissions/roles/${me.role.id}`)
     return new AccessRights(role?.role)
-}
-
-export function getGuildList() {
-    return fetch(process.env.NEXT_PUBLIC_API + '/api/discord-servers?fields[0]=id', {
-        headers: { 'Content-Type': 'application/json' },
-    }).then(x => x.json()).then(x => x.data)
 }

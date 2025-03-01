@@ -39,8 +39,18 @@ export default function MenuLayout({ children }: React.PropsWithChildren) {
 
     if (accessRights?.has('discord-server', 'update')) {
         items.push({
-            key: '/app/admin/',
+            key: 'adm-menu',
             label: 'Administration',
+            children: [
+                {
+                    key: '/app/admin/',
+                    label: 'Bot discord'
+                },
+                {
+                    key: '/app/admin/quests/',
+                    label: 'Courses d\'orientation'
+                },
+            ]
         })
     }
 
@@ -48,17 +58,25 @@ export default function MenuLayout({ children }: React.PropsWithChildren) {
         navigate.push(key)
     }
 
-    for (const item of items) {
-        if (item?.key) {
-            if (item.key == path) {
-                selected = [item.key];
-                break;
+    function getSelected(items_tree: any): any {
+        let selection = undefined
+        for (const item of items_tree) {
+            if ('children' in item) {
+                selection = getSelected(item.children)
             }
-            if (path.startsWith(`${item.key}`)) {
-                selected = [item.key];
+            else if (item?.key) {
+                if (item.key == path) {
+                    return [item.key];
+                }
+                if (path.startsWith(`${item.key}`)) {
+                    selection = [item.key];
+                }
             }
         }
+        return selection
     }
+
+    selected = getSelected(items)
 
     return <Layout style={{ minHeight: '100vh' }} >
         <Layout.Header>
