@@ -19,7 +19,7 @@ export default function AuthProvider({ provider }: { provider: string }) {
             if (access_token != null) localStorage.setItem('discordToken', access_token)
             navigate.push('/app/')
         }
-    }, [isLoading])
+    }, [isLoading, data, navigate, access_token])
 
     return <Typography.Text>Connexion en cours... Echange de clés... Chiffrement des données......</Typography.Text>
 }

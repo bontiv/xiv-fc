@@ -1,9 +1,9 @@
-import { useOne } from "@src/lib/data";
-import { Button, DatePicker, Drawer, Form, Input, InputNumber, Skeleton, Switch, TimePicker } from "antd";
+import { useApi, useMany, useOne } from "@src/lib/data";
+import { AutoComplete, AutoCompleteProps, Button, DatePicker, Drawer, Form, Input, InputNumber, Select, Skeleton, Switch, TimePicker, TreeSelect } from "antd";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReactQuill, { Quill } from "react-quill-new";
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -26,7 +26,8 @@ export type EventDrawerProps = {
     edit?: EventType | null,
     onClose: () => void,
     title?: string,
-    onFinish: (values: any) => void
+    onFinish: (values: any) => void,
+    discord: string
 }
 
 function markdownToHtml(markdownText: string) {
@@ -47,14 +48,40 @@ function htmlToMarkdown(htmlText: string) {
     return String(file);
 }
 
-export default function EventDrawer({ edit, onClose, onFinish }: EventDrawerProps): React.ReactElement {
+export default function EventDrawer({ edit, onClose, onFinish, discord }: EventDrawerProps): React.ReactElement {
     const [form] = Form.useForm()
-    const { isLoading, data } = useOne('events', edit?.id)
+    const { isLoading, data } = useOne('events', edit?.id, { populate: '*' })
+    const [searchLeader, setSearchLeader] = useState<string | undefined>()
+    const { data: searchLeaderApi, isLoading: searchLoading } = useMany(searchLeader && 'discord-users', {
+        filters: {
+            '$and': [
+                { discord_server: discord },
+                {
+                    '$or': [
+                        {
+                            discord_nickname: { '$containsi': searchLeader }
+                        },
+                        {
+                            discord_username: { '$containsi': searchLeader }
+                        }
+                    ]
+                }
+            ]
+        }
+    })
+    const searchLeaderOptions = useMemo<AutoCompleteProps['options']>(
+        () => searchLeaderApi?.data?.map((i: any) => ({ label: i.discord_nickname, value: i.id })),
+        [searchLeaderApi]
+    )
+
+    const { data: channels } = useApi('/alphaplug/discord-channels/' + discord)
 
     useEffect(() => {
         form.resetFields()
+        setSearchLeader(undefined)
     },
-        [edit?.id, form])
+        [edit, data, form]
+    )
 
     return <Drawer
         title={edit?.title ? edit?.title : (edit === null ? 'Nouveau événement' : '')}
@@ -91,12 +118,37 @@ export default function EventDrawer({ edit, onClose, onFinish }: EventDrawerProp
                     <TimePicker format={'HH:mm'} minuteStep={15} placeholder="Durée" showNow={false} />
                 </Form.Item>
 
+                <Form.Item name={'leader'} label='Organisateur' required
+                    normalize={(i) => ({ id: i.value, discord_nickname: i.label })}
+                    getValueProps={(val: any) => ({ value: val && { value: val.id, label: val.discord_nickname } })}
+                >
+                    <Select
+                        options={searchLeaderOptions}
+                        onSearch={(s) => setSearchLeader(s)}
+                        loading={searchLoading}
+                        showSearch
+                        labelInValue
+                        filterOption={false}
+                    />
+                </Form.Item>
+
                 <Form.Item
                     label="Utiliser le groupage par réactions discord"
                     name={'party_config'}
-                    normalize={(val) => val || { useRoles: true, tanks: 2, heals: 2, dps: 4, groups: 1 }}
+                    normalize={(val) => val ? { useRoles: true, tanks: 2, heals: 2, dps: 4, groups: 1 } : null}
+                    getValueProps={(val: any) => ({ value: val != null })}
                 >
                     <Switch />
+                </Form.Item>
+
+                <Form.Item
+                    label="Salon où annoncer l'évent"
+                    name={'channel'}
+                    required
+                >
+                    <TreeSelect
+                        treeData={channels}
+                    />
                 </Form.Item>
 
                 <Form.Item
