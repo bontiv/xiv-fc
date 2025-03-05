@@ -19,6 +19,7 @@ export const Menu = () => {
             <Link onClick={closeCollapse} className={path.startsWith('/membres') ? 'menu active' : 'menu'} href={'/membres'}>Nos membres</Link>
             <Link onClick={closeCollapse} className={path.startsWith('/maison') ? 'menu active' : 'menu'} href={'/maison'}>Le Domaine</Link>
             <Link onClick={closeCollapse} className={path.startsWith('/video') ? 'menu active' : 'menu'} href={'/video'}>Videothèque</Link>
+            <Link onClick={closeCollapse} className={path.startsWith('/planning') ? 'menu active' : 'menu'} href={'/planning'}>Planning</Link>
             <Link onClick={closeCollapse} className={path.startsWith('/rejoindre') ? 'menu active' : 'menu'} href={'/rejoindre'}>Nous rejoindre</Link>
             <a href={'/app'}>Espace membres</a>
         </div>
