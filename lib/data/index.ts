@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 import useSWR from "swr"
 import { Fetcher } from "./api-fetcher"
-import axios from "axios"
 
 export type QueryParams = {
     fields?: string[],
@@ -67,7 +66,15 @@ function recurseObjEncode(obj: object, path: string | null = null): KeyValue[] {
 
 function useForcedApiSWR(url: string | null) {
     return useSWR(url, {
-        fetcher: (url: string, init: any) => Fetcher().get(url, { ...init }).then(r => r.data)
+        fetcher: (url: string, init: any) => Fetcher().get(url, { ...init }).then(r => r.data).catch((e) => {
+            if (e.response.status == 401) {
+                if (typeof localStorage !== undefined) {
+                    localStorage.removeItem('jwt')
+                }
+            } else {
+                throw e
+            }
+        })
     });
 }
 
