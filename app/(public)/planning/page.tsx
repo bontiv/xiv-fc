@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import Planning from './planning';
 
+import './style.css'
+
+
 export const metadata: Metadata = {
     title: 'CL Alpha - Planning',
     description: 'Planning des activités des Alphas',

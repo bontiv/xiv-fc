@@ -1,0 +1,11 @@
+.fc a:hover {
+    @apply no-underline
+}
+
+.fc-col-header-cell, .fc-timegrid-slot-label, .fc-event-main {
+    @apply font-normal text-sm
+}
+
+.fc-col-header-cell {
+    @apply font-semibold
+}
