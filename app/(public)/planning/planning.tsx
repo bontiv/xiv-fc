@@ -29,7 +29,7 @@ const PlanningComponent: React.FC = () => {
         [data])
 
     function getView() {
-        if (window != undefined && window.innerWidth < 750) {
+        if (typeof window != 'undefined' && window.innerWidth < 750) {
             return 'listMonth'
         } else {
             return 'timeGridWeek'
