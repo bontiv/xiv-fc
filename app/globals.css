@@ -91,3 +91,23 @@ h3 {
 .main-content {
   @apply container mx-auto py-8 text-xl
 }
+
+ul.tabs {
+  @apply flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400
+}
+
+ul.tabs li {
+  @apply me-2
+}
+
+ul.tabs li a {
+  @apply inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300
+}
+
+ul.tabs li a:hover {
+  @apply no-underline
+}
+
+ul.tabs li a.active-tab {
+  @apply inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500
+}
