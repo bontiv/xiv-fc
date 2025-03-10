@@ -1,11 +1,8 @@
 'use client'
 
-import { as } from "@fullcalendar/core/internal-common";
 import { useApi } from "@src/lib/data";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { ElementType, ReactElement, useState } from "react";
+import React, { useState } from "react";
 import { TwitchClip } from "react-twitch-embed";
-import { Container } from "react-dom";
 import Image from "next/image";
 
 type Clip = {
